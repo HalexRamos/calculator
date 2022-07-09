@@ -39,7 +39,7 @@ export default {
   components: { Button, Display },
   methods: {
     clearMemory() {
-      Object.assign(this.$data, this.$$options.data());
+      Object.assign(this.$data, this.$options.data());
     },
     setOperation(operation) {
       if (this.current === 0) {
@@ -54,6 +54,10 @@ export default {
           this.values[0] = eval(
             `${this.values[0]} ${currentOperation} ${this.values[1]}`
           );
+          if (isNaN(this.values[0]) || !isFinite(this.values[0])) {
+            this.clearMemory();
+            return;
+          }
         } catch (e) {
           this.$emit("onError", e);
         }
